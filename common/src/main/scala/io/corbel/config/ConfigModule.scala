@@ -1,0 +1,12 @@
+package io.corbel.config
+
+import com.typesafe.config.{ConfigFactory, Config}
+
+/**
+  * @author Alexander De Leon (alex.deleon@devialab.com)
+  */
+trait ConfigModule {
+
+  lazy val config: Config = ConfigFactory.load()
+
+}
