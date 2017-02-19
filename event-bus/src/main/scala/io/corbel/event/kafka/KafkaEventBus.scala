@@ -2,15 +2,15 @@ package io.corbel.event.kafka
 
 import akka.NotUsed
 import akka.actor.ActorSystem
-import akka.kafka.{Subscriptions, ConsumerSettings, ProducerMessage, ProducerSettings}
 import akka.kafka.scaladsl.{Consumer, Producer}
+import akka.kafka.{ConsumerSettings, ProducerMessage, ProducerSettings, Subscriptions}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
 import grizzled.slf4j.Logging
-import io.corbel.event.{SubscriptionProperties, Event, EventBus}
+import io.corbel.event.{Event, EventBus, SubscriptionProperties}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.{StringDeserializer, ByteArrayDeserializer, StringSerializer, ByteArraySerializer}
+import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySerializer, StringDeserializer, StringSerializer}
 import org.json4s.DefaultFormats
 import org.json4s.JsonAST.JObject
 import org.json4s.native.Serialization._

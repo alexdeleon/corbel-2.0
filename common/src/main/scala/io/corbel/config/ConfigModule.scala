@@ -1,6 +1,6 @@
 package io.corbel.config
 
-import com.typesafe.config.{ConfigFactory, Config}
+import com.typesafe.config.{Config, ConfigFactory}
 
 /**
   * @author Alexander De Leon (alex.deleon@devialab.com)

@@ -1,9 +1,8 @@
 package io.corbel.functions.registry
 
-import io.corbel.functions.model._
-import akka.http.scaladsl.model.{MediaRange, HttpMethod, Uri, HttpRequest}
 import akka.http.scaladsl.model.headers.Accept
-import io.corbel.functions.model.CorbelFunction
+import akka.http.scaladsl.model.{HttpMethod, HttpRequest, MediaRange, Uri}
+import io.corbel.functions.model.{CorbelFunction, _}
 
 import scala.reflect.ClassTag
 
@@ -12,7 +11,7 @@ import scala.reflect.ClassTag
   */
 trait Registry {
 
-  def register(f: CorbelFunction)
+  def register(f: CorbelFunction, activators: Activator*)
 
   def query(query: QueryMatcher): query.Result = query(this)
 

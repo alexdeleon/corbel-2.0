@@ -2,10 +2,10 @@ package io.corbel.event
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Flow, Sink, Source}
+import akka.stream.scaladsl.Source
 import io.corbel.config.ConfigModule
 import io.corbel.event.kafka.KafkaEventBusModule
-import org.json4s.JsonAST.{JString, JObject}
+import org.json4s.JsonAST.JObject
 import org.json4s.JsonDSL._
 
 /**

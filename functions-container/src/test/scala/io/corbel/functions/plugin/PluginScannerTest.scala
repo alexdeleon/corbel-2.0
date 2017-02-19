@@ -1,6 +1,6 @@
 package io.corbel.functions.plugin
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 /**
   * @author Alexander De Leon (alex.deleon@devialab.com)

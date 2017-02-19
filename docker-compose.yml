@@ -1,0 +1,28 @@
+api:
+  image: devialab/corbel2-api:2.0.0-SNAPSHOT<localBuild>
+  links:
+    - zookeeper
+    - kafka
+  ports:
+    - "8080:8080"
+sample-plugin:
+  image: devialab/corbel2-sample-plugin:2.0.0-SNAPSHOT<localBuild>
+  links:
+    - zookeeper
+    - kafka
+  ports:
+    - "8081"
+zookeeper:
+  image: wurstmeister/zookeeper
+  ports:
+    - "2181:2181"
+kafka:
+  image: wurstmeister/kafka
+  hostname: kafka
+  ports:
+    - "9092:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_ADVERTISED_HOST_NAME: "kafka"
+    KAFKA_CREATE_TOPICS: "dispatcher.functions.corbel.io"

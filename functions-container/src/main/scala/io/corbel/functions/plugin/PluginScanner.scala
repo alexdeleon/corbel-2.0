@@ -1,7 +1,7 @@
 package io.corbel.functions.plugin
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner
-import io.github.lukehutch.fastclasspathscanner.matchprocessor.{ImplementingClassMatchProcessor, SubclassMatchProcessor}
+import io.github.lukehutch.fastclasspathscanner.matchprocessor.ImplementingClassMatchProcessor
 
 
 /**

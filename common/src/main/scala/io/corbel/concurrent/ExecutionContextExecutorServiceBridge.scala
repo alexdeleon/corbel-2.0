@@ -13,9 +13,10 @@ Copyright 2013 Viktor Klang
    limitations under the License.
 */
 
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
-import java.util.concurrent.{ AbstractExecutorService, TimeUnit }
 import java.util.Collections
+import java.util.concurrent.{AbstractExecutorService, TimeUnit}
+
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 
 object ExecutionContextExecutorServiceBridge {
   implicit def apply(ec: ExecutionContext): ExecutionContextExecutorService = ec match {

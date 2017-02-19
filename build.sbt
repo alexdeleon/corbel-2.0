@@ -1,3 +1,7 @@
+import com.typesafe.sbt.packager.docker._
+
+enablePlugins(DockerComposePlugin)
+
 name := "corbel"
 
 lazy val commonSettings = Seq(
@@ -12,6 +16,11 @@ lazy val commonSettings = Seq(
   )
 )
 
+lazy val commonDockerSettings = Seq(
+  dockerBaseImage := "java:8-jdk",
+  defaultLinuxInstallLocation := "/"
+)
+
 /* ----- Dependencies ---------------------------------------------- */
 val AkkaVersion = "2.4.8"
 
@@ -24,6 +33,7 @@ lazy val commonDependencies = Seq(
   "org.scalactic" %% "scalactic" % "2.2.6",
   "org.clapper"   %%  "grizzled-slf4j" % "1.0.2",
   "org.json4s" %% "json4s-native" % "3.4.0",
+  "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
   "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
 
@@ -33,7 +43,8 @@ lazy val runtimeDependencies = Seq(
 
 lazy val akkaDependencies = Seq(
   "com.typesafe.akka" %% "akka-http-experimental" % AkkaVersion,
-  "com.typesafe.akka" %% "akka-actor" % AkkaVersion
+  "com.typesafe.akka" %% "akka-actor" % AkkaVersion,
+  "com.typesafe.akka" %% "akka-slf4j" % AkkaVersion
 )
 
 lazy val eventBusDependencies = Seq(
@@ -41,7 +52,7 @@ lazy val eventBusDependencies = Seq(
 )
 
 lazy val functionsDependencies = Seq(
-  "org.apache.curator" % "curator-x-discovery" % "3.2.0"
+  "org.apache.curator" % "curator-x-discovery" % "2.11.0"
 )
 
 lazy val functionsContainerDependencies = Seq(
@@ -51,7 +62,7 @@ lazy val functionsContainerDependencies = Seq(
 
 /* ----- Modules ---------------------------------------------- */
 lazy val root = (project in file(".")).
-  aggregate(functions)
+  aggregate(common, functions, eventBus, api, functionsContainer, samplePlugin)
 
 lazy val common = (project in file("common")).
   settings(commonSettings: _*).
@@ -66,13 +77,21 @@ lazy val functions = (project in file("functions")).
 lazy val functionsContainer = (project in file("functions-container")).
   settings(commonSettings: _*).
   settings(libraryDependencies := commonDependencies ++ runtimeDependencies ++ functionsContainerDependencies).
-  dependsOn(common, functions, samplePlugin)
+  dependsOn(common, functions).
+  enablePlugins(JavaAppPackaging, DockerPlugin).
+  settings(commonDockerSettings ++ Seq(
+    packageName in Docker := "devialab/corbel2-function-container"
+  ))
 
 
 lazy val api = (project in file("api")).
   settings(libraryDependencies := commonDependencies ++ akkaDependencies ++ runtimeDependencies).
   settings(commonSettings: _*).
-  dependsOn(common, functions)
+  dependsOn(common, functions).
+  enablePlugins(JavaAppPackaging, DockerPlugin).
+  settings(commonDockerSettings ++ Seq(
+    packageName in Docker := "devialab/corbel2-api"
+  ))
 
 
 lazy val eventBus = (project in file("event-bus")).
@@ -83,4 +102,12 @@ lazy val eventBus = (project in file("event-bus")).
 
 lazy val samplePlugin = (project in file("sample-plugin")).
   settings(commonSettings: _*).
-  dependsOn(functions)
+  dependsOn(functionsContainer).
+  enablePlugins(JavaAppPackaging, DockerPlugin).
+  settings(commonDockerSettings ++ Seq(
+    mainClass in Compile := Some("io.corbel.functions.Runner"),
+    packageName in Docker := "devialab/corbel2-sample-plugin"
+  ))
+
+/* ----- Plugins configuration ---------------------------------- */
+dockerImageCreationTask := (publishLocal in Docker).value

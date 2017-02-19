@@ -3,9 +3,9 @@ package io.corbel.http
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
-import akka.http.scaladsl.model.{HttpResponse, HttpRequest}
+import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Sink, Flow}
+import akka.stream.scaladsl.{Flow, Sink}
 
 import scala.concurrent.Future
 

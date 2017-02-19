@@ -3,8 +3,8 @@ package io.corbel.functions.registry
 /**
   * @author Alexander De Leon (alex.deleon@devialab.com)
   */
-trait RegistryModule {
+trait RegistryModule[T <: Registry] {
 
-  def registry: Registry
+  def registry: T
 
 }
